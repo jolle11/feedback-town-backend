@@ -1,12 +1,28 @@
 {
-  "name": "feedback-town",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+	"name": "feedback-town",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"dev": "nodemon --watch src --exec \"node --loader ts-node/esm\" src/index.ts",
+		"build": "tsc -p tsconfig.json",
+		"start": "node build/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@fastify/autoload": "^6.1.0",
+		"fastify": "^5.2.1",
+		"fastify-plugin": "^5.0.1",
+		"pino-pretty": "^13.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^22.13.1",
+		"dotenv": "^16.4.7",
+		"nodemon": "^3.1.9",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.7.3"
+	}
 }
