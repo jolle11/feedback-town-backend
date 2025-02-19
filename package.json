@@ -15,9 +15,12 @@
 	"dependencies": {
 		"@clerk/fastify": "^2.1.21",
 		"@fastify/autoload": "^6.1.0",
+		"@prisma/client": "^6.3.1",
 		"fastify": "^5.2.1",
 		"fastify-plugin": "^5.0.1",
-		"pino-pretty": "^13.0.0"
+		"pg": "^8.13.3",
+		"pino-pretty": "^13.0.0",
+		"prisma": "^6.3.1"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.1",

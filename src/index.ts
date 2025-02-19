@@ -3,9 +3,11 @@ import Fastify from "fastify";
 import dotenv from "dotenv";
 import { clerkPlugin, clerkClient, getAuth } from "@clerk/fastify";
 import "dotenv/config";
+import { PrismaClient } from "@prisma/client";
 
 dotenv.config();
 
+const prisma = new PrismaClient();
 const server = Fastify({
 	logger:
 		process.env.NODE_ENV !== "production"
@@ -24,6 +26,11 @@ const server = Fastify({
 server.register(clerkPlugin, {
 	publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
 	secretKey: process.env.CLERK_SECRET_KEY,
+});
+
+server.get("/users", async (req, reply) => {
+	const users = await prisma.user.findMany();
+	reply.send(users);
 });
 
 server.get("/", (req, reply) => {
