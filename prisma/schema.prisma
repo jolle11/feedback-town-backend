@@ -14,7 +14,96 @@ datasource db {
 }
 
 model User {
-    id       String @id @default(cuid())
-    email    String @unique
-    password String
+    id             Int        @id @default(autoincrement())
+    email          String     @unique
+    password       String
+    name           String
+    profileImageId Int?       @unique
+    profileImage   Upload?    @relation("UserProfileImage", fields: [profileImageId], references: [id])
+    role           String     @default("CITIZEN")
+    createdAt      DateTime   @default(now())
+    updatedAt      DateTime   @updatedAt
+    deletedAt      DateTime?
+    feedbacks      Feedback[]
+    town           Town       @relation(fields: [townId], references: [id])
+    townId         Int
+    comments       Comment[]
+    votes          Vote[]
+    uploads        Upload[]   @relation("UserUploads")
+}
+
+model Feedback {
+    id        Int       @id @default(autoincrement())
+    title     String
+    content   String
+    category  String
+    status    String    @default("PENDING")
+    user      User      @relation(fields: [userId], references: [id])
+    userId    Int
+    town      Town      @relation(fields: [townId], references: [id])
+    townId    Int
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime?
+    comments  Comment[]
+    votes     Vote[]
+    priority  String    @default("LOW")
+    images    Upload[]  @relation("FeedbackImages")
+}
+
+model Town {
+    id          Int        @id @default(autoincrement())
+    name        String
+    zipCode     String
+    state       String?
+    country     String?
+    population  Int?
+    description String?
+    website     String?
+    users       User[]
+    feedbacks   Feedback[]
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    deletedAt   DateTime?
+}
+
+model Comment {
+    id         Int       @id @default(autoincrement())
+    title      String
+    content    String
+    user       User      @relation(fields: [userId], references: [id])
+    userId     Int
+    feedback   Feedback  @relation(fields: [feedbackId], references: [id])
+    feedbackId Int
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+    deletedAt  DateTime?
+}
+
+model Vote {
+    id         Int       @id @default(autoincrement())
+    type       String
+    user       User      @relation(fields: [userId], references: [id])
+    userId     Int
+    feedback   Feedback  @relation(fields: [feedbackId], references: [id])
+    feedbackId Int
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+    deletedAt  DateTime?
+
+    @@unique([userId, feedbackId]) // One vote per user per feedback
+}
+
+model Upload {
+    id          Int       @id @default(autoincrement())
+    name        String
+    url         String
+    userId      Int
+    user        User      @relation("UserUploads", fields: [userId], references: [id])
+    feedbackId  Int?
+    feedback    Feedback? @relation("FeedbackImages", fields: [feedbackId], references: [id])
+    userProfile User?     @relation("UserProfileImage")
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    deletedAt   DateTime?
 }
