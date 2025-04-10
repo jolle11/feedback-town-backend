@@ -1,11 +1,8 @@
 import type { AddressInfo } from "node:net";
-import Fastify from "fastify";
-import dotenv from "dotenv";
-import { clerkPlugin, clerkClient, getAuth } from "@clerk/fastify";
 import "dotenv/config";
+import { clerkClient, clerkPlugin, getAuth } from "@clerk/fastify";
+import Fastify from "fastify";
 import { PrismaClient } from "@prisma/client";
-
-dotenv.config();
 
 const prisma = new PrismaClient();
 const server = Fastify({
@@ -23,10 +20,7 @@ const server = Fastify({
 			: true,
 });
 
-server.register(clerkPlugin, {
-	publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
-	secretKey: process.env.CLERK_SECRET_KEY,
-});
+server.register(clerkPlugin);
 
 server.get("/users", async (req, reply) => {
 	const users = await prisma.user.findMany();
