@@ -1,23 +1,13 @@
-import type { AddressInfo } from "node:net";
 import "dotenv/config";
+import type { AddressInfo } from "node:net";
 import { clerkClient, clerkPlugin, getAuth } from "@clerk/fastify";
-import Fastify from "fastify";
 import { PrismaClient } from "@prisma/client";
+import Fastify from "fastify";
+import { logger } from "./utils/logger.js";
 
 const prisma = new PrismaClient();
 const server = Fastify({
-	logger:
-		process.env.NODE_ENV !== "production"
-			? {
-					transport: {
-						target: "pino-pretty",
-						options: {
-							ignore: "pid,hostname",
-							colorize: true,
-						},
-					},
-				}
-			: true,
+	logger: logger,
 });
 
 server.register(clerkPlugin);
