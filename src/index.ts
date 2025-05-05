@@ -3,7 +3,7 @@ import type { AddressInfo } from "node:net";
 import { clerkClient, clerkPlugin, getAuth } from "@clerk/fastify";
 import { PrismaClient } from "@prisma/client";
 import Fastify from "fastify";
-import { logger } from "./utils/logger.js";
+import { logger } from "./utils/logger";
 
 const prisma = new PrismaClient();
 const server = Fastify({
