@@ -4,6 +4,7 @@ import { clerkClient, clerkPlugin, getAuth } from "@clerk/fastify";
 import { PrismaClient } from "@prisma/client";
 import Fastify from "fastify";
 import { logger } from "./utils/logger";
+import { townRoutes } from "./routes/TownRoutes";
 
 const prisma = new PrismaClient();
 const server = Fastify({
@@ -37,6 +38,8 @@ server.get("/protected", async (req, reply) => {
 		return reply.code(500).send({ error: "Failed to authenticate user" });
 	}
 });
+
+await server.register(townRoutes);
 
 const start = async () => {
 	try {
